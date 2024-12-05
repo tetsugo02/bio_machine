@@ -1,6 +1,6 @@
 import tkinter as tk
 from pynput import keyboard
-from MorseDecorder import MorseDecoder
+from MorseDecoder import MorseDecoder
 import time
 
 # モールス信号デコーダを初期化

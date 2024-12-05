@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, scrolledtext, ttk
-from MorseDecorder import MorseDecoder
+from MorseDecoder import MorseDecoder
 
 class MorseConverter:
   
