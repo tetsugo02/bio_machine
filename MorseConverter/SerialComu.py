@@ -15,7 +15,6 @@ class SerialComu:
       if self.ser.in_waiting > 0:
         data = self.ser.readline()  # データを1行読み込む
         values = data.decode("utf-8").strip() # decode
-        print("Accepted:",values)
         self.data_Queue.put(values)
 
   def stop(self):
