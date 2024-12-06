@@ -1,7 +1,7 @@
 import json
 import load_morse
 from enum import Enum
-
+import time
 class Mode(Enum):
 	English = 1
 	Japanese = 2
@@ -38,3 +38,5 @@ class MorseDecoder:
 			self.mode = Mode.Japanese
 		else:
 			self.mode = Mode.English
+	
+	
