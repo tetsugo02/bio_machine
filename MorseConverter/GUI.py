@@ -9,6 +9,7 @@ class MorseConverter:
         self.decoder = MorseDecoder()
         self.decoded_text = ""  # 今までデコードした文字列を保存
         self.root = tk.Tk()
+        self.current_timer = None  # タイマー
         self.setup_root_window()
         self.create_widgets()
 
@@ -37,6 +38,9 @@ class MorseConverter:
         )
         self.input_area.grid(row=0, column=0, sticky="nsew", padx=5, pady=(5, 10))
         self.input_area.insert(tk.END, "ここにモールス信号を入力してください")
+        
+        # キーイベントをバインドしてタイマーをリセット
+        self.input_area.bind("<Key>", self.reset_timer)
 
     def create_current_char_label(self):
         """現在のデコード結果を表示するラベルを作成"""
@@ -56,19 +60,30 @@ class MorseConverter:
             row=2, column=0, sticky="nsew", padx=5, pady=(5, 10)
         )
 
-    def periodic_check_input(self):
-        """定期的に入力をチェックし、デコード"""
+    def reset_timer(self, event=None):
+        """キー入力時にデコードタイマーをリセット"""
+        if self.current_timer is not None:
+            self.root.after_cancel(self.current_timer)  # 現在のタイマーをキャンセル
+        self.current_timer = self.root.after(3000, self.decode_input)  # 新たにタイマーをセット
+
+    def decode_input(self):
+        """入力エリアの内容をデコード"""
         # 入力エリアからモールス信号を取得
         morse_code = self.input_area.get("1.0", tk.END).strip()
 
-        if morse_code: 
+        if morse_code:  # 入力がある場合
+            # デコード
             decoded_char = self.decoder.decode_morse_to_str(morse_code)
+
+            # 現在の文字を更新
             self.update_current_char(decoded_char)
+
+            # 今までの文字列に追加
             self.append_decoded_text(decoded_char)
+
             self.input_area.delete("1.0", tk.END)
 
-        # 再度3秒後にチェック
-        self.root.after(3000, self.periodic_check_input)
+        self.current_timer = None  # タイマーをリセット
 
     def update_current_char(self, char):
         """現在のデコード結果をラベルに表示"""
@@ -76,15 +91,12 @@ class MorseConverter:
 
     def append_decoded_text(self, char):
         """デコード文字列をテキストボックスに追加"""
-        if char:
-          self.decoded_text += char
-          self.decoded_textbox.insert(tk.END, char)
-          self.decoded_textbox.see(tk.END)  # 自動スクロール
+        self.decoded_text += char
+        self.decoded_textbox.insert(tk.END, char)
+        self.decoded_textbox.see(tk.END)  # 自動スクロール
 
     def run(self):
         """GUIアプリケーションを実行"""
-        # 入力チェックを開始
-        self.periodic_check_input()
         self.root.mainloop()
 
 
