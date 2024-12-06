@@ -13,7 +13,7 @@ class MorseDecoder:
 		self.jpn_morse = load_morse.load_morse("./morse_data/morse_jpn.json")
 		self.mode = Mode.English # デフォルトは英語モード
 		self.morse = self.eng_morse
-		self.morseSignal_of_delete = "........."
+		self.morseSignal_of_delete = "......"
     
 	def decode_morse_to_str(self, morse_code: str) -> str:
 		if self.mode == Mode.English:
