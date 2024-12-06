@@ -7,7 +7,7 @@ import queue
 import traceback
 import os
 
-class MorseConverter:
+class Moji:
     def __init__(self):
         # モールス信号デコーダーの初期化
         self.decoder = MorseDecoder()
@@ -144,5 +144,5 @@ class MorseConverter:
 
 
 if __name__ == "__main__":
-    converter = MorseConverter()
+    converter = Moji()
     converter.run()
