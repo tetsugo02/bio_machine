@@ -1,6 +1,9 @@
 import tkinter as tk
+
 from tkinter import scrolledtext, ttk
 from MorseDecoder import MorseDecoder
+import pyttsx3
+import threading
 
 
 class MorseConverter:
@@ -10,6 +13,9 @@ class MorseConverter:
     self.decoded_text = ""  # 今までデコードした文字列を保存
     self.root = tk.Tk()
     self.current_timer = None  # タイマー
+    self.read_engine = pyttsx3.init()
+    self.read_engine.setProperty("rate", 150)
+    self.read_engine.setProperty("volume", 0.9)
     self.setup_root_window()
     self.create_widgets()
     self.change_mode_button()
@@ -80,16 +86,16 @@ class MorseConverter:
   def change_mode_button(self):
     """モード変更ボタンを作成"""
     self.change_mode_button = ttk.Button(
-      self.root_frame, text="モード変更", command=self.chang_mode
+      self.root_frame, text="モード変更", command=self.change_mode
     )
     self.change_mode_button.grid(row=4, column=0, sticky="ew", padx=5, pady=5)
     
-  def chang_mode(self):
+  def change_mode(self):
     """モードを変更"""
     self.decoder.change_mode()
     self.current_mode_label.config(text=f"現在のモード: {self.decoder.mode}")
     self.decoded_text = "change_mode"
-    self.decoded_textbox.delete("1.0", tk.END)
+    self.speak("モードを変更")
 
   def reset_timer(self, event=None):
     """キー入力時にデコードタイマーをリセット"""
@@ -110,23 +116,21 @@ class MorseConverter:
       else:
         pass
 
-      # 現在の文字を更新
-      self.update_current_char(decoded_char)
-
-      # 今までの文字列に追加
-      self.append_decoded_text(decoded_char)
-
-      self.input_area.delete("1.0", tk.END)
-
-    match self.decoded_text:
+    match decoded_char:
+      # デコード結果に応じて処理を分岐
+      #　特殊な文字列の場合
       case "delete":
         self.decoded_text = self.decoded_text[:-1]
         self.decoded_textbox.delete("end-2c", tk.END)
       case "change_mode":
-        self.decoder.change_mode()
-        self.decoded_text = ""
-        self.decoded_textbox.delete("1.0", tk.END)
-
+        self.change_mode()
+      case _:
+        # 今までの文字列に追加
+        self.append_decoded_text(decoded_char)
+    # 現在の文字を更新
+    self.update_current_char(decoded_char)
+    self.speak(decoded_char)
+    self.input_area.delete("1.0", tk.END)
     self.current_timer = None  # タイマーをリセット
 
   def update_current_char(self, char):
@@ -142,7 +146,16 @@ class MorseConverter:
   def run(self):
     """GUIアプリケーションを実行"""
     self.root.mainloop()
+    
+  def speak(self,text):
+    if text:
+      thread=threading.Thread(target=self.run_pyttx3, args=(text,))
+      thread.daemon=True
+      thread.start()
 
+  def run_pyttx3(self,text):
+    self.read_engine.say(text)
+    self.read_engine.runAndWait()
 
 if __name__ == "__main__":
   converter = MorseConverter()
