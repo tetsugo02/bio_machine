@@ -91,6 +91,15 @@ GUIを使用してモールス信号をデコードし、テキストを表示�
       - `append_decoded_text(self, char)`
       - `run(self)`
 
+### `main.py`
+GUIを使用して、エミュレートされたシリアル通信から受け取ったモールス信号をデコードし、テキストを表示および読み上げる
+
+### `virtual_serial.py`
+Arduinoからのシリアル通信をエミュレートする
+
+### `virtual_serial_port.sh`
+仮想シリアルポートを作成するshellスクリプト
+
 ### `morse_data/morse_eng.json`
 英語のモールス信号データを提供する。
 

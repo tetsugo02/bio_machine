@@ -16,7 +16,7 @@ class Moji:
     self.create_widgets()
     self.change_mode_button()
 
-  def setup_root_window(self):
+  def setup_root_window(self) -> None:
     """ウィンドウの基本設定"""
     self.root.title("静電文字入力")
     self.root.geometry("600x600")
@@ -29,13 +29,13 @@ class Moji:
           i, weight=1 if i in range(2) else 0)
     self.root_frame.grid_columnconfigure(0, weight=1)
 
-  def create_widgets(self):
+  def create_widgets(self) -> None:
     """ウィジェットを作成"""
     self.create_input_area()
     self.create_current_char_label()
     self.create_decoded_textbox()
 
-  def create_input_area(self):
+  def create_input_area(self) -> None:
     """入力エリア（モールス信号入力用）を作成"""
     self.input_area = scrolledtext.ScrolledText(
         self.root_frame, wrap=tk.WORD, width=50, height=3
@@ -50,7 +50,7 @@ class Moji:
     self.input_area.bind("<Key>", self.reset_timer)
     self.input_area.bind("<<Modified>>", self.on_text_change)
 
-  def create_current_char_label(self):
+  def create_current_char_label(self) -> None:
     """現在のデコード結果とモードを表示するラベルを作成"""
     # フレームを作成してラベルを配置
     self.status_frame = ttk.Frame(self.root_frame)
@@ -72,7 +72,7 @@ class Moji:
     self.status_frame.grid_columnconfigure(0, weight=1)
     self.status_frame.grid_columnconfigure(1, weight=1)
 
-  def create_decoded_textbox(self):
+  def create_decoded_textbox(self) -> None:
     """今までのデコード文字列を表示するテキストボックスを作成"""
     self.decoded_textbox = scrolledtext.ScrolledText(
         self.root_frame, wrap=tk.WORD, width=50, height=10, font=("Helvetica", 20)
@@ -81,7 +81,7 @@ class Moji:
         row=3, column=0, sticky="nsew", padx=5, pady=(5, 10)
     )
 
-  def change_mode_button(self):
+  def change_mode_button(self) -> None:
     """モード変更ボタンを作成"""
     self.change_mode_button = ttk.Button(
         self.root_frame, text="モード変更", command=self.change_mode
@@ -89,13 +89,13 @@ class Moji:
     self.change_mode_button.grid(
         row=4, column=0, sticky="ew", padx=5, pady=5)
 
-  def reset_timer(self, event=None):
+  def reset_timer(self, event=None) -> None:
     """キー入力時にデコードタイマーをリセット"""
     if self.current_timer is not None:
       self.root.after_cancel(self.current_timer)  # 現在のタイマーをキャンセル
     self.current_timer = self.root.after(self.interval, self.decode_input_and_update)  # 新たにタイマーをセット
 
-  def decode_input_and_update(self):
+  def decode_input_and_update(self) -> None:
     """入力エリアの内容をデコード"""
     # 入力エリアからモールス信号を取得
     morse_code = self.input_area.get("1.0", tk.END).strip()
@@ -134,7 +134,7 @@ class Moji:
     self.input_area.delete("1.0", tk.END)
     self.current_timer = None  # タイマーをリセット
 
-  def update_current_char(self, char):
+  def update_current_char(self, char: str) -> None:
     """現在のデコード結果をラベルに表示"""
     self.current_char_label.config(text=f"現在の文字: {char}")
 
@@ -143,18 +143,18 @@ class Moji:
     self.decoder.change_mode()
     self.current_mode_label.config(text=f"現在のモード: {self.decoder.mode}")
 
-  def append_morse_code(self, morse_code):
+  def append_morse_code(self, morse_code: str) -> None:
     """モールス信号を入力エリアに追加"""
     self.input_area.insert(tk.END, morse_code)
     print(f"insert: {morse_code}")
 
-  def append_decoded_text(self, char):
+  def append_decoded_text(self, char: str) -> None:
     """デコード文字列をテキストボックスに追加"""
     self.decoded_text += char
     self.decoded_textbox.insert(tk.END, char)
     self.decoded_textbox.see(tk.END)  # 自動スクロール
 
-  def on_text_change(self, event):
+  def on_text_change(self, event: any) -> None:
     """テキストが変更されたときの処理"""
     self.input_area.edit_modified(False)  # 変更フラグをリセット
     self.reset_timer()  # タイマーをリセット

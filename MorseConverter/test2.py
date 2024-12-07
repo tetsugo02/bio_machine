@@ -7,7 +7,7 @@ import time
 morse_decoder = MorseDecoder()
 
 # 入力のタイムアウト時間
-INACTIVITY_TIMEOUT = 3  
+INACTIVITY_TIMEOUT = 3
 
 current_symbol = ""
 morse_input = ""
@@ -16,48 +16,48 @@ last_input_time = time.time()
 
 # GUIの更新関数
 def update_gui(decoded_message):
-    result_label.config(text=f"デコード結果: {decoded_message}")
+  result_label.config(text=f"デコード結果: {decoded_message}")
 
 
 # キーが押されたときの処理
 def on_press(key):
-    global current_symbol, morse_input, last_input_time
+  global current_symbol, morse_input, last_input_time
 
-    try:
-        last_input_time = time.time()  # 最後の入力時間を更新
+  try:
+    last_input_time = time.time()  # 最後の入力時間を更新
 
-        if key.char == ".":
-            current_symbol += "."
-        elif key.char == "-":
-            current_symbol += "-"
-        elif key == keyboard.Key.space:  # スペースで文字区切り
-            if current_symbol:
-                morse_input += current_symbol + " "
-                current_symbol = ""
-    except AttributeError:
-        pass
+    if key.char == ".":
+      current_symbol += "."
+    elif key.char == "-":
+      current_symbol += "-"
+    elif key == keyboard.Key.space:  # スペースで文字区切り
+      if current_symbol:
+        morse_input += current_symbol + " "
+        current_symbol = ""
+  except AttributeError:
+    pass
 
 
 # タイムアウトの監視
 def check_timeout():
-    global current_symbol, morse_input, last_input_time
+  global current_symbol, morse_input, last_input_time
 
-    # 現在時刻と最後の入力時刻を比較
-    if time.time() - last_input_time > INACTIVITY_TIMEOUT:
-        if current_symbol or morse_input:
-            # 未処理の入力を追加
-            if current_symbol:
-                morse_input += current_symbol
-                current_symbol = ""
+  # 現在時刻と最後の入力時刻を比較
+  if time.time() - last_input_time > INACTIVITY_TIMEOUT:
+    if current_symbol or morse_input:
+      # 未処理の入力を追加
+      if current_symbol:
+        morse_input += current_symbol
+        current_symbol = ""
 
-            # 判定を実行
-            decoded_message = morse_decoder.decode_morse_to_str(morse_input.strip())
-            update_gui(decoded_message)
-            morse_input = ""  # 入力リセット
-        last_input_time = time.time()  # タイマーリセット
+      # 判定を実行
+      decoded_message = morse_decoder.decode_morse_to_str(morse_input.strip())
+      update_gui(decoded_message)
+      morse_input = ""  # 入力リセット
+    last_input_time = time.time()  # タイマーリセット
 
-    # 再帰的にタイムアウトを監視
-    root.after(100, check_timeout)
+  # 再帰的にタイムアウトを監視
+  root.after(100, check_timeout)
 
 
 # GUIのセットアップ
@@ -85,7 +85,7 @@ check_timeout()
 
 # GUIのメインループ
 try:
-    root.mainloop()
+  root.mainloop()
 except KeyboardInterrupt:
-    print("\nプログラムを終了します。")
-    listener.stop()
+  print("\nプログラムを終了します。")
+  listener.stop()

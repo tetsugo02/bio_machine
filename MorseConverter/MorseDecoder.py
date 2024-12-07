@@ -40,7 +40,7 @@ class MorseDecoder:
 
     return decoded_str
 
-  def change_mode(self):
+  def change_mode(self) -> None:
     if self.mode == Mode.English:
       self.mode = Mode.Japanese
     else:
