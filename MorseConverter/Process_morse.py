@@ -33,8 +33,7 @@ def process_morse_data(serialcomu, morsedecoder):
 
 
 # スレッドで実行
-process_thread = threading.Thread(
-    target=process_morse_data, args=(serialcomu, morsedecoder))
+process_thread = threading.Thread(target=process_morse_data, args=(serialcomu, morsedecoder))
 serialcomu_thread = threading.Thread(target=serialcomu.read_line_serial)
 process_thread.start()
 serialcomu_thread.start()
