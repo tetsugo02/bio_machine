@@ -43,6 +43,7 @@ class Moji:
         )
         self.input_area.grid(row=0, column=0, sticky="nsew", padx=5, pady=(5, 10))
         self.input_area.insert(tk.END, "ここにモールス信号を入力してください")
+        self.input_area.bind("<FocusIn>", lambda e: self.input_area.delete("1.0", tk.END))
         
         # キーイベントをバインドしてタイマーをリセット
         self.input_area.bind("<Key>", self.reset_timer)
