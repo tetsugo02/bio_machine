@@ -7,9 +7,9 @@ import os
 class Moji:
   def __init__(self):
     # モールス信号デコーダーの初期化
+    self.root = tk.Tk()
     self.decoder = MorseDecoder()
     self.decoded_text = ""  # 今までデコードした文字列を保存
-    self.root = tk.Tk()
     self.current_timer = None  # タイマー
     self.setup_root_window()
     self.create_widgets()
@@ -87,12 +87,6 @@ class Moji:
     self.change_mode_button.grid(
         row=4, column=0, sticky="ew", padx=5, pady=5)
 
-  def change_mode(self):
-    """モードを変更"""
-    self.decoder.change_mode()
-    self.current_mode_label.config(text=f"現在のモード: {self.decoder.mode}")
-    self.decoded_text = "change_mode"
-
   def reset_timer(self, event=None):
     """キー入力時にデコードタイマーをリセット"""
     if self.current_timer is not None:
@@ -136,6 +130,15 @@ class Moji:
   def update_current_char(self, char):
     """現在のデコード結果をラベルに表示"""
     self.current_char_label.config(text=f"現在の文字: {char}")
+
+  def change_mode(self):
+    """モードを変更"""
+    self.decoder.change_mode()
+    self.current_mode_label.config(text=f"現在のモード: {self.decoder.mode}")
+
+  def append_morse_code(self, morse_code):
+    """モールス信号を入力エリアに追加"""
+    self.input_area.insert(tk.END, morse_code)
 
   def append_decoded_text(self, char):
     """デコード文字列をテキストボックスに追加"""
