@@ -42,11 +42,12 @@ class Moji:
     self.input_area.grid(
         row=0, column=0, sticky="nsew", padx=5, pady=(5, 10))
     self.input_area.insert(tk.END, "ここにモールス信号を入力してください")
+
     self.input_area.bind(
         "<FocusIn>", lambda e: self.input_area.delete("1.0", tk.END))
-
     # キーイベントをバインドしてタイマーをリセット
     self.input_area.bind("<Key>", self.reset_timer)
+    self.input_area.bind("<<Modified>>", self.on_text_change)
 
   def create_current_char_label(self):
     """現在のデコード結果とモードを表示するラベルを作成"""
@@ -98,6 +99,7 @@ class Moji:
     """入力エリアの内容をデコード"""
     # 入力エリアからモールス信号を取得
     morse_code = self.input_area.get("1.0", tk.END).strip()
+    decoded_char = None
 
     if morse_code:  # 入力がある場合
       # デコード
@@ -117,6 +119,8 @@ class Moji:
         self.change_mode()
       case "read_all":
         os.system(f'say {self.decoded_text}')
+      case None:
+        pass
       case _:
         # 今までの文字列に追加
         self.append_decoded_text(decoded_char)
@@ -125,7 +129,7 @@ class Moji:
     self.update_current_char(decoded_char)
     os.system(f'say {decoded_char}')  # 読み上げ用のキューに追加
     self.input_area.delete("1.0", tk.END)
-    self.current_timer = None  # タイマーをリ���ット
+    self.current_timer = None  # タイマーをリセット
 
   def update_current_char(self, char):
     """現在のデコード結果をラベルに表示"""
@@ -139,12 +143,18 @@ class Moji:
   def append_morse_code(self, morse_code):
     """モールス信号を入力エリアに追加"""
     self.input_area.insert(tk.END, morse_code)
+    print(f"insert: {morse_code}")
 
   def append_decoded_text(self, char):
     """デコード文字列をテキストボックスに追加"""
     self.decoded_text += char
     self.decoded_textbox.insert(tk.END, char)
     self.decoded_textbox.see(tk.END)  # 自動スクロール
+
+  def on_text_change(self, event):
+    """テキストが変更されたときの処理"""
+    self.input_area.edit_modified(False)  # 変更フラグをリセット
+    self.reset_timer()  # タイマーをリセット
 
   def run(self):
     """GUIアプリケーションを実行"""

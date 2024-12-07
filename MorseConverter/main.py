@@ -7,7 +7,7 @@ moji = Moji.Moji()
 serialcomu = SerialComu.SerialComu()
 
 
-def run_moji_with_serialcomu(serialcomu=serialcomu, gui=moji):
+def run_moji_with_serialcomu(serialcomu=serialcomu):
   while serialcomu.running:
     try:
       while not serialcomu.data_Queue.empty():
@@ -15,7 +15,7 @@ def run_moji_with_serialcomu(serialcomu=serialcomu, gui=moji):
         serialcomu.data_Queue.task_done()
 
         if single_morse_code:
-          gui.append_morse_code(single_morse_code)
+          moji.append_morse_code(single_morse_code)
 
     except Exception as e:
       print(e)
