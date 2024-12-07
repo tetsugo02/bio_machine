@@ -5,6 +5,18 @@
 - [ ] Arduino側のAD変換及び送信処理の実装
 - [ ] Arduinoを用いたテスト
 
+## 環境構築
+まずは次のように、`MoreseConverter`ディレクトリに移動したことを確認する。
+```bash
+$ pwd
+/home/user/**/bio_machine/MorseConverter
+```
+仮想環境を作成し、必要なパッケージをインストールする。
+```bash
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+(.venv) $ pip install -r requirements_Mac.txt  #Macの場合
+```
 
 ## 各ファイルの機能とAPIリスト
 
