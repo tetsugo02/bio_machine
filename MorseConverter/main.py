@@ -26,8 +26,8 @@ def run_moji_with_serialcomu(serialcomu=serialcomu, gui=moji):
 
 if __name__ == "__main__":
   # スレッドで実行
-  serialcomu_thread = threading.Thread(target=serialcomu.read_line_serial)
-  run_moji_thread = threading.Thread(target=run_moji_with_serialcomu)
+  serialcomu_thread = threading.Thread(target=serialcomu.read_line_serial)  # シリアル通信でMorse Code受け取って、Queueに貯蓄するスレッド
+  run_moji_thread = threading.Thread(target=run_moji_with_serialcomu)  # 　QueueからMorse Codeを取り出して、GUIに追加するスレッド
   serialcomu_thread.start()
   run_moji_thread.start()
 
