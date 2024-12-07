@@ -5,19 +5,20 @@ import os
 
 
 class Moji:
-  def __init__(self):
+  def __init__(self, interval: int = 3000) -> None:
     # モールス信号デコーダーの初期化
     self.root = tk.Tk()
     self.decoder = MorseDecoder()
     self.decoded_text = ""  # 今までデコードした文字列を保存
     self.current_timer = None  # タイマー
+    self.interval = interval
     self.setup_root_window()
     self.create_widgets()
     self.change_mode_button()
 
   def setup_root_window(self):
     """ウィンドウの基本設定"""
-    self.root.title("モールス信号デコーダ")
+    self.root.title("静電文字入力")
     self.root.geometry("600x600")
     self.root_frame = ttk.Frame(self.root, padding=(10, 10))
     self.root_frame.pack(expand=True, fill=tk.BOTH)
@@ -92,10 +93,9 @@ class Moji:
     """キー入力時にデコードタイマーをリセット"""
     if self.current_timer is not None:
       self.root.after_cancel(self.current_timer)  # 現在のタイマーをキャンセル
-    self.current_timer = self.root.after(
-        3000, self.decode_input)  # 新たにタイマーをセット
+    self.current_timer = self.root.after(self.interval, self.decode_input_and_update)  # 新たにタイマーをセット
 
-  def decode_input(self):
+  def decode_input_and_update(self):
     """入力エリアの内容をデコード"""
     # 入力エリアからモールス信号を取得
     morse_code = self.input_area.get("1.0", tk.END).strip()
@@ -115,8 +115,10 @@ class Moji:
       case "delete":
         self.decoded_text = self.decoded_text[:-1]
         self.decoded_textbox.delete("end-2c", tk.END)
+        os.system(f'say {decoded_char}')
       case "change_mode":
         self.change_mode()
+        os.system(f'say {decoded_char}')
       case "read_all":
         os.system(f'say {self.decoded_text}')
       case None:
@@ -124,10 +126,11 @@ class Moji:
       case _:
         # 今までの文字列に追加
         self.append_decoded_text(decoded_char)
+        os.system(f'say {decoded_char}')  # 読み上げ用のキューに追加
 
     # 現在の文字を更新
     self.update_current_char(decoded_char)
-    os.system(f'say {decoded_char}')  # 読み上げ用のキューに追加
+
     self.input_area.delete("1.0", tk.END)
     self.current_timer = None  # タイマーをリセット
 
