@@ -1,3 +1,4 @@
+import os
 from . import load_morse
 from enum import Enum
 
@@ -9,8 +10,13 @@ class Mode(Enum):
 
 class MorseDecoder:
   def __init__(self):
-    self.eng_morse = load_morse.load_morse("./morse_data/morse_eng.json")
-    self.jpn_morse = load_morse.load_morse("./morse_data/morse_jpn.json")
+    # 現在のファイルの場所を基準にしたパスを構築
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    eng_morse_path = os.path.join(current_dir, "morse_data", "morse_eng.json")
+    jpn_morse_path = os.path.join(current_dir, "morse_data", "morse_jpn.json")
+
+    self.eng_morse = load_morse.load_morse(eng_morse_path)
+    self.jpn_morse = load_morse.load_morse(jpn_morse_path)
     self.mode = Mode.English  # デフォルトは英語モード
     self.morse = self.eng_morse
     self.morseSignal_of_delete = "......"
