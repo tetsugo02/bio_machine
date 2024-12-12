@@ -1,27 +1,37 @@
 import serial
 import serial.tools.list_ports
 import queue
+import time
 
 arduino_port = "/dev/cu.usbmodem1101"
 virtual_port = "/dev/ttys018"
 
 
 class SerialComu:
-  def __init__(self, port=virtual_port, baudrate=9600):
+  def __init__(self, port=arduino_port, baudrate=9600, threshold=50, morseSignal="."):
     self.port = port
     self.baudrate = baudrate
+    self.threshold = threshold  # 電圧の閾値
+    self.morseSignal = morseSignal  # モールス信号として使う文字
     self.ser = serial.Serial(self.port, self.baudrate, timeout=1)
     self.running = True
     self.data_Queue = queue.Queue()  # データ共有用のキュー
     print(f"Connected to {self.port}")
 
   def read_line_serial(self):
+    last_time = time.time()
+
     while self.running:
+      now = time.time()
       if self.ser.in_waiting > 0:
         data = self.ser.readline()  # データを1行読み込む
-        values = data.decode("utf-8").strip()  # decode
-        self.data_Queue.put(values)
-        print(f"Received: {values}")
+        value_str = data.decode("utf-8").strip()  # decode
+        value = float(value_str)
+        if value > self.threshold and now - last_time > 1.4:
+          self.data_Queue.put(self.morseSignal)
+          last_time = now
+          print("over threshold")
+        print(f"Received: {value},type: {type(value)}, morseSignal: {self.morseSignal}")
 
   def stop(self):
     self.running = False

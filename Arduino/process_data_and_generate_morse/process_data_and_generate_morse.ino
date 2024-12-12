@@ -6,9 +6,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   double readAnalog = analogRead(A0);
-  readAnalog = readAnalog/1000*5;
-  if (readAnalog>=3.0) {
-    Serial.println(".");
-    delay(1000);
-  }
+  readAnalog = readAnalog/2;
+  Serial.println(readAnalog);
+  delay(50);
 }
