@@ -5,8 +5,18 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  double readAnalog = analogRead(A0);
-  readAnalog = readAnalog/2;
-  Serial.println(readAnalog);
-  delay(50);
+  Serial.println(100);
+  delay(1500);
+  Serial.println(100);
+  delay(1500);
+  Serial.println(100);
+  delay(1500);
+  delay(6000);
+  Serial.println(100);
+  Serial.println(100);
+  Serial.println(100);
+  Serial.println(100);
+  Serial.println(100);
+  Serial.println(100);
+  delay(6000);
 }
