@@ -1,4 +1,4 @@
-import SerialComu
+import Moji_input.SerialComu.SerialComu as SerialComu
 import MorseDecoder
 import threading
 import time

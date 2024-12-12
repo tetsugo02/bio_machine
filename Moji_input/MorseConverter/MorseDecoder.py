@@ -1,4 +1,4 @@
-import load_morse
+from . import load_morse
 from enum import Enum
 
 

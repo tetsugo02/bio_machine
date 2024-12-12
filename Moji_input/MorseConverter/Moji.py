@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import scrolledtext, ttk
-from MorseDecoder import MorseDecoder
+from .MorseDecoder import MorseDecoder
 import os
 
 

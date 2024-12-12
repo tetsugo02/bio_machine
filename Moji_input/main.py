@@ -1,7 +1,7 @@
 import threading
 import queue
-import Moji
-import SerialComu
+from MorseConverter import Moji
+from SerialComu import SerialComu
 
 # インスタンスを作成
 moji = Moji.Moji()
