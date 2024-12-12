@@ -4,11 +4,11 @@ import queue
 import time
 
 arduino_port = "/dev/cu.usbmodem1101"
-virtual_port = "/dev/ttys018"
+virtual_port = "/dev/ttys015"
 
 
 class SerialComu:
-  def __init__(self, port=arduino_port, baudrate=9600, threshold=50, morseSignal="."):
+  def __init__(self, port=virtual_port, baudrate=9600, threshold=50, morseSignal="."):
     self.port = port
     self.baudrate = baudrate
     self.threshold = threshold  # 電圧の閾値
@@ -26,12 +26,18 @@ class SerialComu:
       if self.ser.in_waiting > 0:
         data = self.ser.readline()  # データを1行読み込む
         value_str = data.decode("utf-8").strip()  # decode
-        value = float(value_str)
-        if value > self.threshold and now - last_time > 1.4:
-          self.data_Queue.put(self.morseSignal)
-          last_time = now
-          print("over threshold")
-        print(f"Received: {value},type: {type(value)}, morseSignal: {self.morseSignal}")
+        # value = float(value_str)
+        # if value > self.threshold and now - last_time > 1.4:
+        #  self.data_Queue.put(self.morseSignal)
+        #  last_time = now
+        #  print("over threshold")
+        #  print(f"Received: {value},type: {type(value)}, morseSignal: {self.morseSignal}")
+        ############################
+        # Debug
+        value = value_str
+        self.data_Queue.put(value)
+        print(f"Received: {value},type: {type(value)}, morseSignal: {value}")
+        ############################
 
   def stop(self):
     self.running = False

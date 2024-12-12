@@ -3,7 +3,7 @@ import serial
 
 # 仮想シリアルポートの設定
 # !NOTE: socatで生成した仮想ポートは、入力と出力2つ存在する。
-PORT = "/dev/ttys012"  # 仮想ポートを指定（Windowsなら 'COM3'）
+PORT = "/dev/ttys014"  # 仮想ポートを指定（Windowsなら 'COM3'）
 BAUDRATE = 9600
 
 # モールス信号表
@@ -41,6 +41,10 @@ if __name__ == "__main__":
         case _:
           morse = text_to_morse(message) + "\n"
 
-      ser.write(morse.encode())  # 文字列全体を送信
+      for char in morse:
+        ser.write(char.encode())
+        print(f"Sent: {char}")
+        time.sleep(1.6)
+
       print(f"Sent: {morse}")
       time.sleep(1)  # 次の送信まで待機
