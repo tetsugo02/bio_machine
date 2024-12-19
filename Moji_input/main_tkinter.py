@@ -38,7 +38,7 @@ if __name__ == "__main__":
   run_serialcomu_thread.start()
 
   # キューを処理するための関数を呼び出す
-  moji.root.after(100, process_morse_queue)
+  moji.root.after(1, process_morse_queue)
 
   try:
     moji.run()

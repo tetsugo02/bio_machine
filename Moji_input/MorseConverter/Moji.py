@@ -5,7 +5,7 @@ import os
 
 
 class Moji:
-  def __init__(self, interval: int = 4000) -> None:
+  def __init__(self, interval: int = 6000) -> None:
     # モールス信号デコーダーの初期化
     self.root = tk.Tk()
     self.decoder = MorseDecoder()
