@@ -11,8 +11,8 @@ class SerialComu:
   def __init__(self, port=arduino_port, baudrate=9600):
     self.port = port
     self.baudrate = baudrate
-    self.threshold_A0 = 40  # 電圧の閾値
-    self.threshold_A1 = 40  # 電圧の閾値
+    self.threshold_A0 = 30  # 電圧の閾値
+    self.threshold_A1 = 30  # 電圧の閾値
     self.ser = serial.Serial(self.port, self.baudrate, timeout=1)
     self.running = True
     self.data_Queue = queue.Queue()  # データ共有用のキュー
@@ -30,11 +30,11 @@ class SerialComu:
         value_str_A1: str = value_str.split(",")[1]
         value_A0: float = float(value_str_A0)
         value_A1: float = float(value_str_A1)
-        if value_A0 > self.threshold_A0 and now - last_time > 1.5:
+        if value_A0 > self.threshold_A0 and now - last_time > 1:
           self.data_Queue.put(".")
           last_time = now
           print("A0 over threshold")
-        if value_A1 > self.threshold_A1 and now - last_time > 1.5:
+        if value_A1 > self.threshold_A1 and now - last_time > 1:
           self.data_Queue.put("-")
           last_time = now
           print("A1 over threshold")
