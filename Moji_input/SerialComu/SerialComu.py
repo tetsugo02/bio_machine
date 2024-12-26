@@ -3,7 +3,7 @@ import serial.tools.list_ports
 import queue
 import time
 
-arduino_port = "/dev/cu.usbmodem1101"
+arduino_port = "/dev/cu.usbmodem101"
 virtual_port = "/dev/ttys015"
 
 
@@ -11,8 +11,8 @@ class SerialComu:
   def __init__(self, port=arduino_port, baudrate=9600):
     self.port = port
     self.baudrate = baudrate
-    self.threshold_A0 = 60  # 電圧の閾値
-    self.threshold_A1 = 50  # 電圧の閾値
+    self.threshold_A0 = 40  # 電圧の閾値
+    self.threshold_A1 = 40  # 電圧の閾値
     self.ser = serial.Serial(self.port, self.baudrate, timeout=1)
     self.running = True
     self.data_Queue = queue.Queue()  # データ共有用のキュー

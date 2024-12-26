@@ -17,7 +17,7 @@ class MorseDecoder:
 
     self.eng_morse = load_morse.load_morse(eng_morse_path)
     self.jpn_morse = load_morse.load_morse(jpn_morse_path)
-    self.mode = Mode.English  # デフォルトは英語モード
+    self.mode = Mode.Japanese  # デフォルトは英語モード
     self.morse = self.eng_morse
 
   def decode_morse_to_str(self, morse_code: str) -> str:

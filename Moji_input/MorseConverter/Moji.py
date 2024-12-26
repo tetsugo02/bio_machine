@@ -16,6 +16,7 @@ class Moji:
     self.setup_root_window()
     self.create_widgets()
     self.change_mode_button()
+    self.shfit_flag = False
 
   def setup_root_window(self) -> None:
     """ウィンドウの基本設定"""
@@ -115,7 +116,7 @@ class Moji:
       # 　特殊な文字列の場合
       case "delete":
         self.decoded_text = self.decoded_text[:-1]
-        self.decoded_textbox.delete("end-2c", tk.END)
+        self.special_char_action("delete")
         os.system(f'say {decoded_char}')
       case "change_mode":
         self.change_mode()
@@ -123,13 +124,14 @@ class Moji:
       case "read_all":
         os.system(f'say {self.decoded_text}')
       case "space":
-        self.append_decoded_text(" ")
+        self.special_char_action("space")
         os.system(f'say {decoded_char}')
       case "enter":
-        self.append_decoded_text("\n")
+        self.special_char_action("enter")
         os.system('say "enter"')
       case "shift":
-        pyautogui.hotkey("shift")
+        self.special_char_action("shift")
+        os.system('say "shift"')
       case None:
         pass
       case _:
@@ -169,6 +171,26 @@ class Moji:
         pyautogui.typewrite(char)
 
     self.decoded_textbox.see(tk.END)  # 自動スクロール
+
+  def special_char_action(self, char: str) -> None:
+    """特殊文字の処理"""
+    self.decoded_textbox.focus_set()
+    match char:
+      case "delete":
+        pyautogui.press("backspace")
+      case "space":
+        pyautogui.press("space")
+      case "enter":
+        pyautogui.press("enter")
+      case "shift":
+        if self.shfit_flag:
+          self.shfit_flag = False
+          pyautogui.keyUp("shift")
+        else:
+          self.shfit_flag = True
+          pyautogui.keyDown("shift")
+      case _:
+        pass
 
   def on_text_change(self, event: any) -> None:
     """テキストが変更されたときの処理"""
