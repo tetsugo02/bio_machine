@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import scrolledtext, ttk
-from .MorseDecoder import MorseDecoder
+from .MorseDecoder import MorseDecoder, Mode
 import os
+import pyautogui
 
 
 class Moji:
@@ -121,6 +122,14 @@ class Moji:
         os.system(f'say {decoded_char}')
       case "read_all":
         os.system(f'say {self.decoded_text}')
+      case "space":
+        self.append_decoded_text(" ")
+        os.system(f'say {decoded_char}')
+      case "enter":
+        self.append_decoded_text("\n")
+        os.system('say "enter"')
+      case "shift":
+        pyautogui.hotkey("shift")
       case None:
         pass
       case _:
@@ -151,7 +160,14 @@ class Moji:
   def append_decoded_text(self, char: str) -> None:
     """デコード文字列をテキストボックスに追加"""
     self.decoded_text += char
-    self.decoded_textbox.insert(tk.END, char)
+
+    match self.decoder.mode:
+      case Mode.English:
+        self.decoded_textbox.insert(tk.END, char)
+      case Mode.Japanese:
+        self.decoded_textbox.focus_set()
+        pyautogui.typewrite(char)
+
     self.decoded_textbox.see(tk.END)  # 自動スクロール
 
   def on_text_change(self, event: any) -> None:

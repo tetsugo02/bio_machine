@@ -19,9 +19,6 @@ class MorseDecoder:
     self.jpn_morse = load_morse.load_morse(jpn_morse_path)
     self.mode = Mode.English  # デフォルトは英語モード
     self.morse = self.eng_morse
-    self.morseSignal_of_delete = "......"
-    self.morseSignal_of_change_mode = "------"
-    self.morseSignal_of_read_decoded_str = "...---"
 
   def decode_morse_to_str(self, morse_code: str) -> str:
     if self.mode == Mode.English:
@@ -35,19 +32,13 @@ class MorseDecoder:
       if morse_code == morse:
         decoded_str = character
         break
-    # 特殊な文字列の場合
-    match morse_code:
-      case self.morseSignal_of_delete:
-        decoded_str = "delete"
-      case self.morseSignal_of_change_mode:
-        decoded_str = "change_mode"
-      case self.morseSignal_of_read_decoded_str:
-        decoded_str = "read_all"
 
     return decoded_str
 
   def change_mode(self) -> None:
     if self.mode == Mode.English:
       self.mode = Mode.Japanese
+      os.system("osascript -e 'tell application \"System Events\" to key code 104'")
     else:
       self.mode = Mode.English
+      os.system("osascript -e 'tell application \"System Events\" to key code 102'")
