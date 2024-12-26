@@ -19,7 +19,7 @@ class Moji:
   def setup_root_window(self) -> None:
     """ウィンドウの基本設定"""
     self.root.title("静電文字入力")
-    self.root.geometry("600x600")
+    self.root.geometry("800x700")
     self.root_frame = ttk.Frame(self.root, padding=(10, 10))
     self.root_frame.pack(expand=True, fill=tk.BOTH)
 
@@ -38,7 +38,7 @@ class Moji:
   def create_input_area(self) -> None:
     """入力エリア（モールス信号入力用）を作成"""
     self.input_area = scrolledtext.ScrolledText(
-        self.root_frame, wrap=tk.WORD, width=50, height=3
+        self.root_frame, wrap=tk.WORD, width=50, height=3, font=("Helvetica", 30)
     )
     self.input_area.grid(
         row=0, column=0, sticky="nsew", padx=5, pady=(5, 10))
