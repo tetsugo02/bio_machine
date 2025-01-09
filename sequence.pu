@@ -1,0 +1,40 @@
+@startuml Moji_input
+participant Arduino
+participant "SerialComu\n(daemon thread)" as SerialComu
+participant "Data Queue" as Queue
+participant "MainThread" as MainThread
+participant "MojiGUI\n(daemon thread)" as MojiGUI
+
+Arduino->>SerialComu: アナログ値送信 (A0,A1)
+activate SerialComu
+
+SerialComu->>SerialComu: 閾値判定
+note over SerialComu
+  A0 > threshold_A0 → "."
+  A1 > threshold_A1 → "-"
+end note
+
+SerialComu->>Queue: モールス信号をキューに追加
+deactivate SerialComu
+
+loop Every 1ms
+    MainThread->>Queue: モース信号取得 
+    Queue-->>MainThread: single_morse_code
+    MainThread->>MojiGUI: append_morse_code()
+
+    note over MojiGUI
+      1. 入力エリアに表示
+      2. タイマーリセット
+      3. interval後にデコード
+    end note
+
+    alt タイマー経過後
+        MojiGUI->>MojiGUI: decode_input_and_update()
+        note over MojiGUI
+          1. モース信号をデコード
+          2. 結果を表示/読み上げ
+          3. 特殊コマンド処理
+        end note
+    end
+end
+@enduml

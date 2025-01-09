@@ -20,7 +20,7 @@ class Moji:
 
   def setup_root_window(self) -> None:
     """ウィンドウの基本設定"""
-    self.root.title("静電文字入力")
+    self.root.title("筋電文字入力")
     self.root.geometry("800x700")
     self.root_frame = ttk.Frame(self.root, padding=(10, 10))
     self.root_frame.pack(expand=True, fill=tk.BOTH)
