@@ -1,12 +1,14 @@
+# プロジェクト名
+
 ## TODOLIST
 - [x] モールス信号のデコード処理を実装する
 - [x] GUIの作成
-- [X] 文字呼び上げの実装
-- [X] Arduino側のAD変換及び送信処理の実装
-- [X] Arduinoを用いたテスト
+- [x] 文字呼び上げの実装
+- [x] Arduino側のAD変換及び送信処理の実装
+- [x] Arduinoを用いたテスト
 
 ## 環境構築
-まずは次のように、`MoreseConverter`ディレクトリに移動したことを確認する。
+まずは次のように、`MorseConverter`ディレクトリに移動したことを確認する。
 ```bash
 $ pwd
 /home/user/**/bio_machine/MorseConverter
@@ -42,36 +44,6 @@ $ source .venv/bin/activate
       - `decode_morse_to_str(self, morse_code: str) -> str`
       - `change_mode(self)`
 
-### `Text_reader.py`
-テキストを音声で読み上げるクラスを提供する。
-- **クラス**
-  - `TextReader`
-    - **メソッド**
-      - `__init__(self)`
-      - `run_pyttx3(self, read_queue)`
-
-### `load_morse.py`
-モールス信号のデータをJSONファイルから読み込む関数を提供する。
-- **関数**
-  - `load_morse(path: str) -> dict`
-
-### `Process_morse.py`
-シリアル通信から受け取ったモールス信号をデコードする処理を提供する。
-- **関数**
-  - `process_morse_data(serialcomu, morsedecoder)`
-
-### `test.py`
-シリアル通信から受け取ったモールス信号をデコードする処理をテストするスクリプトである。
-- **関数**
-  - `process_morse_data(serialcomu, morsedecoder)`
-
-### `test2.py`
-GUIを使用してモールス信号をデコードするスクリプトである。
-- **関数**
-  - `update_gui(decoded_message)`
-  - `on_press(key)`
-  - `check_timeout()`
-
 ### `Moji.py`
 GUIを使用してモールス信号をデコードし、テキストを表示および読み上げるクラスを提供する。
 - **クラス**
@@ -84,24 +56,50 @@ GUIを使用してモールス信号をデコードし、テキストを表示�
       - `create_current_char_label(self)`
       - `create_decoded_textbox(self)`
       - `change_mode_button(self)`
-      - `change_mode(self)`
       - `reset_timer(self, event=None)`
-      - `decode_input(self)`
+      - `decode_input_and_update(self)`
       - `update_current_char(self, char)`
+      - `append_morse_code(self, morse_code)`
       - `append_decoded_text(self, char)`
+      - `special_char_action(self, char)`
+      - `on_text_change(self, event)`
       - `run(self)`
 
-### `main.py`
-GUIを使用して、エミュレートされたシリアル通信から受け取ったモールス信号をデコードし、テキストを表示および読み上げる
+### `load_morse.py`
+モールス信号のデータをJSONファイルから読み込む関数を提供する。
+- **関数**
+  - `load_morse(path: str) -> dict`
+
+### `Process_morse.py`
+シリアル通信から受け取ったモールス信号をデコードする処理を提供する。
+- **関数**
+  - `process_morse_data(serialcomu, morsedecoder)`
+
+### `main_tkinter.py`
+GUIを使用して、エミュレートされたシリアル通信から受け取ったモールス信号をデコードし、テキストを表示および読み上げるスクリプト。
+- **関数**
+  - `run_serialcomu(serialcomu)`
+  - `process_morse_queue()`
 
 ### `virtual_serial.py`
-Arduinoからのシリアル通信をエミュレートする
+Arduinoからのシリアル通信をエミュレートするスクリプト。
+- **関数**
+  - `text_to_morse(text)`
 
 ### `virtual_serial_port.sh`
-仮想シリアルポートを作成するshellスクリプト
+仮想シリアルポートを作成するshellスクリプト。
 
 ### `morse_data/morse_eng.json`
 英語のモールス信号データを提供する。
 
 ### `morse_data/morse_jpn.json`
 日本語のモールス信号データを提供する。
+
+### `sequence.pu`
+シーケンス図を提供する。
+
+### `Arduino/process_data_and_generate_morse/process_data_and_generate_morse.ino`
+Arduinoでアナログデータを読み取り、シリアル通信で送信するスケッチ。
+
+### `Arduino/test/test.ino`
+Arduinoでアナログデータを読み取り、シリアル通信で送信するテストスケッチ。
