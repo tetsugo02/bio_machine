@@ -58,10 +58,10 @@ GUIを使用してモールス信号をデコードし、テキストを表示�
       - `change_mode_button(self)`
       - `reset_timer(self, event=None)`
       - `decode_input_and_update(self)`
-      - `update_current_char(self, char)`
+      - `update_current_char(self, str)`
       - `append_morse_code(self, morse_code)`
-      - `append_decoded_text(self, char)`
-      - `special_char_action(self, char)`
+      - `append_decoded_text(self, str)`
+      - `special_char_action(self, str)`
       - `on_text_change(self, event)`
       - `run(self)`
 
